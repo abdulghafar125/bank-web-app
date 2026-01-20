@@ -79,6 +79,23 @@ class ProminenceBankAPITester:
                 error_msg = response.text if hasattr(response, 'text') else str(response)
                 self.log_test("Seed Data", False, error=error_msg)
 
+    def get_latest_otp(self, email):
+        """Get the latest OTP for an email from backend logs"""
+        try:
+            import subprocess
+            result = subprocess.run(['grep', f'OTP for {email}:', '/var/log/supervisor/backend.err.log'], 
+                                  capture_output=True, text=True)
+            if result.stdout:
+                lines = result.stdout.strip().split('\n')
+                if lines:
+                    # Get the last line and extract OTP
+                    last_line = lines[-1]
+                    otp = last_line.split(': ')[-1]
+                    return otp
+        except:
+            pass
+        return None
+
     def test_admin_login(self):
         """Test admin login flow"""
         print("🔐 Testing Admin Login...")
@@ -97,23 +114,28 @@ class ProminenceBankAPITester:
                 if data.get('requires_otp'):
                     self.log_test("Admin Login Request", True, "OTP required as expected")
                     
-                    # For testing, we'll use a dummy OTP since we can't access logs easily
-                    # In real testing, you'd check backend logs for the OTP
-                    otp_data = {
-                        "email": self.admin_email,
-                        "otp": "123456",  # This will likely fail, but tests the endpoint
-                        "purpose": "login"
-                    }
+                    # Get real OTP from logs
+                    time.sleep(1)  # Wait for log to be written
+                    otp_code = self.get_latest_otp(self.admin_email)
                     
-                    # Try OTP verification (will likely fail without real OTP)
-                    otp_success, otp_response = self.make_request('POST', '/auth/verify-otp', otp_data)
-                    if otp_success:
-                        otp_data = otp_response.json()
-                        self.admin_token = otp_data.get('token')
-                        self.log_test("Admin OTP Verification", True, "Login successful")
+                    if otp_code:
+                        otp_data = {
+                            "email": self.admin_email,
+                            "otp": otp_code,
+                            "purpose": "login"
+                        }
+                        
+                        # Try OTP verification with real OTP
+                        otp_success, otp_response = self.make_request('POST', '/auth/verify-otp', otp_data)
+                        if otp_success:
+                            otp_result = otp_response.json()
+                            self.admin_token = otp_result.get('token')
+                            self.log_test("Admin OTP Verification", True, f"Login successful with OTP: {otp_code}")
+                        else:
+                            error_msg = otp_response.text if hasattr(otp_response, 'text') else str(otp_response)
+                            self.log_test("Admin OTP Verification", False, error=error_msg)
                     else:
-                        self.log_test("Admin OTP Verification", False, 
-                                    error="Expected - need real OTP from backend logs")
+                        self.log_test("Admin OTP Verification", False, error="Could not retrieve OTP from logs")
                 else:
                     self.log_test("Admin Login Request", False, error="Expected OTP requirement")
             except Exception as e:
