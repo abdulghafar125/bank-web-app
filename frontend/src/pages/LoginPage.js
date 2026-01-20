@@ -159,6 +159,10 @@ export default function LoginPage() {
               </InputOTP>
             </div>
 
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-center">
+              <p className="text-blue-400 text-sm">Demo Mode: Use OTP <span className="font-mono font-bold">123456</span></p>
+            </div>
+
             <Button 
               type="submit" 
               className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 glow-cyan"
