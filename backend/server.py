@@ -295,7 +295,14 @@ async def send_otp_email(email: str, otp: str, purpose: str):
     settings = await db.settings.find_one({"type": "smtp"}, {"_id": 0})
     
     if not settings or not settings.get("smtp_host"):
-        logger.warning(f"SMTP not configured. OTP for {email}: {otp}")
+        # For development/testing: Log OTP to console
+        logger.info(f"[DEV MODE] OTP for {email} ({purpose}): {otp}")
+        print(f"\n{'='*50}")
+        print(f"OTP CODE FOR TESTING")
+        print(f"Email: {email}")
+        print(f"Purpose: {purpose}")
+        print(f"OTP: {otp}")
+        print(f"{'='*50}\n")
         return True  # For development, allow without SMTP
     
     try:
