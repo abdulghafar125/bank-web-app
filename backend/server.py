@@ -409,8 +409,14 @@ async def verify_otp(data: OTPVerify):
     if otp_record["attempts"] >= 3:
         raise HTTPException(status_code=400, detail="Too many attempts")
     
-    # Verify OTP
-    if hash_otp(data.otp) != otp_record["otp_hash"]:
+    # Check if SMTP is configured - if not, accept demo OTP "123456"
+    settings = await db.settings.find_one({"type": "smtp"}, {"_id": 0})
+    is_demo_mode = not settings or not settings.get("smtp_host")
+    
+    # Verify OTP (accept demo OTP 123456 when SMTP not configured)
+    if is_demo_mode and data.otp == "123456":
+        pass  # Accept demo OTP
+    elif hash_otp(data.otp) != otp_record["otp_hash"]:
         await db.otps.update_one(
             {"id": otp_record["id"]},
             {"$inc": {"attempts": 1}}
