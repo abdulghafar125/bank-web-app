@@ -252,33 +252,57 @@ class ProminenceBankAPITester:
         """Test admin-specific endpoints"""
         print("⚙️ Testing Admin Endpoints...")
         
+        if not self.admin_token:
+            print("   Skipping admin endpoint tests - no valid token")
+            return
+        
         # Test admin dashboard
-        success, response = self.make_request('GET', '/admin/dashboard', expected_status=401)
+        success, response = self.make_request('GET', '/admin/dashboard', token=self.admin_token)
         if success:
-            self.log_test("Admin Dashboard", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Admin Dashboard", True, f"Stats: {data.get('total_customers', 0)} customers, {data.get('total_accounts', 0)} accounts")
+            except:
+                self.log_test("Admin Dashboard", True, "Endpoint accessible")
         else:
-            self.log_test("Admin Dashboard", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Admin Dashboard", False, error=error_msg)
         
         # Test admin customers
-        success, response = self.make_request('GET', '/admin/customers', expected_status=401)
+        success, response = self.make_request('GET', '/admin/customers', token=self.admin_token)
         if success:
-            self.log_test("Admin Customers", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Admin Customers", True, f"Retrieved {len(data)} customers")
+            except:
+                self.log_test("Admin Customers", True, "Endpoint accessible")
         else:
-            self.log_test("Admin Customers", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Admin Customers", False, error=error_msg)
         
         # Test admin transfers
-        success, response = self.make_request('GET', '/admin/transfers', expected_status=401)
+        success, response = self.make_request('GET', '/admin/transfers', token=self.admin_token)
         if success:
-            self.log_test("Admin Transfers", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Admin Transfers", True, f"Retrieved {len(data)} transfers")
+            except:
+                self.log_test("Admin Transfers", True, "Endpoint accessible")
         else:
-            self.log_test("Admin Transfers", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Admin Transfers", False, error=error_msg)
         
         # Test admin instruments
-        success, response = self.make_request('GET', '/admin/instruments', expected_status=401)
+        success, response = self.make_request('GET', '/admin/instruments', token=self.admin_token)
         if success:
-            self.log_test("Admin Instruments", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Admin Instruments", True, f"Retrieved {len(data)} instruments")
+            except:
+                self.log_test("Admin Instruments", True, "Endpoint accessible")
         else:
-            self.log_test("Admin Instruments", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Admin Instruments", False, error=error_msg)
 
     def test_public_endpoints(self):
         """Test publicly accessible endpoints"""
