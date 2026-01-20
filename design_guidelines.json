@@ -1,0 +1,144 @@
+{
+  "brand_identity": {
+    "name": "Prominence Bank",
+    "archetype": "The Midnight Vault",
+    "emotional_tone": "Secure, Elite, Global, Precision",
+    "theme_mode": "dark",
+    "primary_color_hex": "#0a1628",
+    "accent_color_hex": "#00a8e8"
+  },
+  "typography": {
+    "font_family_heading": "Manrope, sans-serif",
+    "font_family_body": "Inter, sans-serif",
+    "scale": {
+      "h1": "text-4xl md:text-5xl font-bold tracking-tight",
+      "h2": "text-3xl font-semibold tracking-tight",
+      "h3": "text-2xl font-semibold",
+      "body": "text-base leading-relaxed text-slate-300",
+      "caption": "text-sm text-slate-400 uppercase tracking-wider"
+    },
+    "import_statement": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800&display=swap');"
+  },
+  "colors": {
+    "palette": {
+      "background": {
+        "default": "#0a1628",
+        "paper": "#112240",
+        "subtle": "#1a2c4e"
+      },
+      "primary": {
+        "main": "#00a8e8",
+        "hover": "#0284c7",
+        "foreground": "#ffffff"
+      },
+      "text": {
+        "primary": "#f8fafc",
+        "secondary": "#94a3b8",
+        "muted": "#64748b"
+      },
+      "border": {
+        "default": "rgba(255, 255, 255, 0.08)",
+        "active": "rgba(0, 168, 232, 0.3)"
+      },
+      "status": {
+        "success": "#10b981",
+        "warning": "#f59e0b",
+        "error": "#ef4444",
+        "info": "#3b82f6"
+      }
+    },
+    "tailwind_config_extension": {
+      "colors": {
+        "navy": {
+          "950": "#0a1628",
+          "900": "#112240",
+          "800": "#1e293b",
+          "700": "#334155"
+        },
+        "cyan": {
+          "500": "#00a8e8",
+          "400": "#38bdf8"
+        }
+      }
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-navy-950/70 border border-white/10 shadow-2xl",
+    "gradients": {
+      "hero": "bg-gradient-to-br from-navy-950 via-[#0d1f3a] to-navy-900",
+      "accent_glow": "bg-cyan-500/20 blur-3xl"
+    },
+    "textures": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E\")",
+    "borders": "border border-white/5",
+    "shadows": "shadow-[0_8px_30px_rgb(0,0,0,0.24)]"
+  },
+  "layout_strategies": {
+    "dashboard_grid": "grid grid-cols-1 md:grid-cols-12 gap-6 p-6 md:p-8",
+    "bento_cells": {
+      "hero": "col-span-12 lg:col-span-8 row-span-2",
+      "sidebar": "col-span-12 lg:col-span-4 row-span-2",
+      "stat_card": "col-span-12 md:col-span-6 lg:col-span-3",
+      "list_vertical": "col-span-12 lg:col-span-4 row-span-2"
+    },
+    "spacing": {
+      "container_padding": "p-6 md:p-10",
+      "section_gap": "gap-8"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg px-6 py-2.5 transition-all shadow-[0_0_15px_rgba(0,168,232,0.3)] hover:shadow-[0_0_25px_rgba(0,168,232,0.5)]",
+      "secondary": "bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg px-6 py-2.5 backdrop-blur-sm transition-all",
+      "ghost": "text-slate-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-2 transition-colors"
+    },
+    "cards": {
+      "default": "bg-navy-900/50 border border-white/5 rounded-xl p-6 backdrop-blur-sm hover:border-white/10 transition-colors",
+      "highlight": "bg-gradient-to-br from-navy-900 to-navy-800 border border-cyan-500/20 rounded-xl p-6 shadow-lg relative overflow-hidden"
+    },
+    "inputs": {
+      "default": "bg-navy-950/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all outline-none"
+    },
+    "navigation": {
+      "sidebar": "fixed left-0 top-0 h-full w-64 bg-navy-950 border-r border-white/5 flex flex-col z-50",
+      "topbar": "sticky top-0 z-40 w-full bg-navy-950/80 backdrop-blur-md border-b border-white/5"
+    }
+  },
+  "assets": {
+    "images": {
+      "login_bg": "https://images.unsplash.com/photo-1605734804456-0c15b4c31dfd?auto=format&fit=crop&q=80",
+      "dashboard_hero_abstract": "https://images.unsplash.com/photo-1719702703328-87e335030324?auto=format&fit=crop&q=80",
+      "logo_placeholder": "https://customer-assets.emergentagent.com/job_04a84262-127c-46bf-90fb-19ace47e860b/artifacts/h938t30r_logo-2.png"
+    },
+    "icons_library": "lucide-react"
+  },
+  "instructions_to_main_agent": [
+    "CRITICAL: Override the default Shadcn 'zinc' or 'slate' colors in index.css. Set the --background to 218 60% 10% (approx #0a1628) and --card to 218 58% 16% (approx #112240).",
+    "Use the 'Manrope' font for all numbers and headings to give a technical financial feel.",
+    "Do not use pure black (#000000). Always use the Navy palette.",
+    "For the Dashboard, use a 'Bento Grid' layout where widgets have different sizes (1x1, 2x1, 2x2).",
+    "Implement a 'Global Search' command palette (Cmd+K) using Shadcn Command component.",
+    "Use 'Sonner' for all toast notifications.",
+    "Ensure all financial data (amounts) are right-aligned in tables.",
+    "Add a subtle 'noise' texture to the body background to prevent banding on dark gradients.",
+    "For the 'KTT Instrument Viewer', use a high-fidelity document preview style (like a PDF viewer) within a modal.",
+    "Admin Panel should share the same design DNA but can be denser (compact mode)."
+  ],
+  "universal_guidelines": [
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy",
+    "Use glass-morphism effects with backdrop filters (12-24px blur)",
+    "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮 for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary.",
+    "Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN",
+    "Prioritize using pre-existing components from src/components/ui when applicable",
+    "Components MUST use named exports (export const ComponentName = ...)",
+    "Pages MUST use default exports (export default function PageName() {...})",
+    "Use sonner for toasts"
+  ]
+}
