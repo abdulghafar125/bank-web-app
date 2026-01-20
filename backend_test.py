@@ -162,22 +162,28 @@ class ProminenceBankAPITester:
                 if data.get('requires_otp'):
                     self.log_test("Client Login Request", True, "OTP required as expected")
                     
-                    # For testing, we'll use a dummy OTP
-                    otp_data = {
-                        "email": self.client_email,
-                        "otp": "123456",  # This will likely fail, but tests the endpoint
-                        "purpose": "login"
-                    }
+                    # Get real OTP from logs
+                    time.sleep(1)  # Wait for log to be written
+                    otp_code = self.get_latest_otp(self.client_email)
                     
-                    # Try OTP verification
-                    otp_success, otp_response = self.make_request('POST', '/auth/verify-otp', otp_data)
-                    if otp_success:
-                        otp_data = otp_response.json()
-                        self.client_token = otp_data.get('token')
-                        self.log_test("Client OTP Verification", True, "Login successful")
+                    if otp_code:
+                        otp_data = {
+                            "email": self.client_email,
+                            "otp": otp_code,
+                            "purpose": "login"
+                        }
+                        
+                        # Try OTP verification with real OTP
+                        otp_success, otp_response = self.make_request('POST', '/auth/verify-otp', otp_data)
+                        if otp_success:
+                            otp_result = otp_response.json()
+                            self.client_token = otp_result.get('token')
+                            self.log_test("Client OTP Verification", True, f"Login successful with OTP: {otp_code}")
+                        else:
+                            error_msg = otp_response.text if hasattr(otp_response, 'text') else str(otp_response)
+                            self.log_test("Client OTP Verification", False, error=error_msg)
                     else:
-                        self.log_test("Client OTP Verification", False, 
-                                    error="Expected - need real OTP from backend logs")
+                        self.log_test("Client OTP Verification", False, error="Could not retrieve OTP from logs")
                 else:
                     self.log_test("Client Login Request", False, error="Expected OTP requirement")
             except Exception as e:
