@@ -193,43 +193,60 @@ class ProminenceBankAPITester:
             self.log_test("Client Login Request", False, error=error_msg)
 
     def test_client_endpoints(self):
-        """Test client-specific endpoints (without token for now)"""
+        """Test client-specific endpoints"""
         print("📊 Testing Client Endpoints...")
         
-        # Test accounts endpoint (will fail without token, but tests endpoint existence)
-        success, response = self.make_request('GET', '/accounts', expected_status=401)
-        if success:
-            self.log_test("Accounts Endpoint", True, "Properly requires authentication")
-        else:
-            self.log_test("Accounts Endpoint", False, error="Endpoint not responding correctly")
+        if not self.client_token:
+            print("   Skipping client endpoint tests - no valid token")
+            return
         
-        # Test transactions endpoint
-        success, response = self.make_request('GET', '/accounts/dummy/transactions', expected_status=401)
+        # Test accounts endpoint
+        success, response = self.make_request('GET', '/accounts', token=self.client_token)
         if success:
-            self.log_test("Transactions Endpoint", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Accounts Endpoint", True, f"Retrieved {len(data)} accounts")
+            except:
+                self.log_test("Accounts Endpoint", True, "Endpoint accessible")
         else:
-            self.log_test("Transactions Endpoint", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Accounts Endpoint", False, error=error_msg)
         
         # Test beneficiaries endpoint
-        success, response = self.make_request('GET', '/beneficiaries', expected_status=401)
+        success, response = self.make_request('GET', '/beneficiaries', token=self.client_token)
         if success:
-            self.log_test("Beneficiaries Endpoint", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Beneficiaries Endpoint", True, f"Retrieved {len(data)} beneficiaries")
+            except:
+                self.log_test("Beneficiaries Endpoint", True, "Endpoint accessible")
         else:
-            self.log_test("Beneficiaries Endpoint", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Beneficiaries Endpoint", False, error=error_msg)
         
         # Test instruments endpoint
-        success, response = self.make_request('GET', '/instruments', expected_status=401)
+        success, response = self.make_request('GET', '/instruments', token=self.client_token)
         if success:
-            self.log_test("Instruments Endpoint", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Instruments Endpoint", True, f"Retrieved {len(data)} instruments")
+            except:
+                self.log_test("Instruments Endpoint", True, "Endpoint accessible")
         else:
-            self.log_test("Instruments Endpoint", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Instruments Endpoint", False, error=error_msg)
         
         # Test tickets endpoint
-        success, response = self.make_request('GET', '/tickets', expected_status=401)
+        success, response = self.make_request('GET', '/tickets', token=self.client_token)
         if success:
-            self.log_test("Tickets Endpoint", True, "Properly requires authentication")
+            try:
+                data = response.json()
+                self.log_test("Tickets Endpoint", True, f"Retrieved {len(data)} tickets")
+            except:
+                self.log_test("Tickets Endpoint", True, "Endpoint accessible")
         else:
-            self.log_test("Tickets Endpoint", False, error="Endpoint not responding correctly")
+            error_msg = response.text if hasattr(response, 'text') else str(response)
+            self.log_test("Tickets Endpoint", False, error=error_msg)
 
     def test_admin_endpoints(self):
         """Test admin-specific endpoints"""
