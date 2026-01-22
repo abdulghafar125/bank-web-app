@@ -273,6 +273,138 @@ export default function AdminSettings() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="crypto" className="mt-6">
+          <Card className="glass-card">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Bitcoin className="h-5 w-5 text-orange-400" />
+                Crypto Wallet Addresses
+              </CardTitle>
+              <p className="text-slate-400 text-sm">
+                Configure bank receiving wallet addresses for cryptocurrency deposits. These will be displayed to customers in their dashboard.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-slate-300 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-orange-500/20 rounded flex items-center justify-center text-orange-400 text-xs font-bold">₿</span>
+                    Bitcoin (BTC) Address
+                  </Label>
+                  <Input
+                    value={cryptoSettings.btc_address}
+                    onChange={(e) => setCryptoSettings({...cryptoSettings, btc_address: e.target.value})}
+                    placeholder="bc1q..."
+                    className="bg-navy-950/50 border-white/10 text-white font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-slate-300 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center text-blue-400 text-xs font-bold">Ξ</span>
+                    Ethereum (ETH) Address
+                  </Label>
+                  <Input
+                    value={cryptoSettings.eth_address}
+                    onChange={(e) => setCryptoSettings({...cryptoSettings, eth_address: e.target.value})}
+                    placeholder="0x..."
+                    className="bg-navy-950/50 border-white/10 text-white font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-slate-300 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-cyan-500/20 rounded flex items-center justify-center text-cyan-400 text-xs font-bold">*</span>
+                    Stellar (XLM) Address
+                  </Label>
+                  <Input
+                    value={cryptoSettings.xlm_address}
+                    onChange={(e) => setCryptoSettings({...cryptoSettings, xlm_address: e.target.value})}
+                    placeholder="G..."
+                    className="bg-navy-950/50 border-white/10 text-white font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-slate-300 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-green-500/20 rounded flex items-center justify-center text-green-400 text-xs font-bold">B</span>
+                    Bitcoin Cash (BCH) Address
+                  </Label>
+                  <Input
+                    value={cryptoSettings.bch_address}
+                    onChange={(e) => setCryptoSettings({...cryptoSettings, bch_address: e.target.value})}
+                    placeholder="bitcoincash:q..."
+                    className="bg-navy-950/50 border-white/10 text-white font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-slate-300 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">₮</span>
+                    USDT (Tether) Address
+                  </Label>
+                  <Input
+                    value={cryptoSettings.usdt_address}
+                    onChange={(e) => setCryptoSettings({...cryptoSettings, usdt_address: e.target.value})}
+                    placeholder="0x..."
+                    className="bg-navy-950/50 border-white/10 text-white font-mono text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-slate-300">USDT Network</Label>
+                  <Select 
+                    value={cryptoSettings.usdt_network} 
+                    onValueChange={(value) => setCryptoSettings({...cryptoSettings, usdt_network: value})}
+                  >
+                    <SelectTrigger className="bg-navy-950/50 border-white/10 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ERC20">ERC20 (Ethereum)</SelectItem>
+                      <SelectItem value="TRC20">TRC20 (Tron)</SelectItem>
+                      <SelectItem value="BEP20">BEP20 (BSC)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 pt-6">
+                <h3 className="text-white font-semibold mb-4">Fee Settings</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-slate-300">Crypto Transfer Fee (%)</Label>
+                    <Input
+                      type="number"
+                      step="0.001"
+                      value={cryptoSettings.crypto_transfer_fee}
+                      onChange={(e) => setCryptoSettings({...cryptoSettings, crypto_transfer_fee: parseFloat(e.target.value)})}
+                      className="bg-navy-950/50 border-white/10 text-white"
+                    />
+                    <p className="text-slate-500 text-xs">Fee applied to crypto deposits</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                <p className="text-orange-400 text-sm flex items-center gap-2">
+                  <Wallet className="h-4 w-4" />
+                  Wallet addresses are displayed to customers for deposits. Changes are logged in audit trail.
+                </p>
+              </div>
+
+              <Button 
+                onClick={handleSaveCryptoSettings}
+                className="bg-orange-500 hover:bg-orange-600"
+                disabled={saving}
+              >
+                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                Save Crypto Settings
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="content" className="mt-6">
           <Card className="glass-card">
             <CardHeader>
