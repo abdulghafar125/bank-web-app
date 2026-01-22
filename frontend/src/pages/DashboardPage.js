@@ -35,9 +35,12 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const [accounts, setAccounts] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [cryptoWallets, setCryptoWallets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
   const [hideBalance, setHideBalance] = useState(false);
+  const [copiedAddress, setCopiedAddress] = useState(null);
+  const [selectedWallet, setSelectedWallet] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -45,8 +48,12 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      const accountsRes = await api.get('/accounts');
+      const [accountsRes, cryptoRes] = await Promise.all([
+        api.get('/accounts'),
+        api.get('/crypto/wallets')
+      ]);
       setAccounts(accountsRes.data);
+      setCryptoWallets(cryptoRes.data.wallets || []);
       
       if (accountsRes.data.length > 0) {
         const txRes = await api.get(`/accounts/${accountsRes.data[0].id}/transactions?limit=5`);
