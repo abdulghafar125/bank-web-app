@@ -1087,6 +1087,83 @@ async def admin_update_funding_instructions(
     await log_audit(admin["id"], "funding_instructions_updated", {"version": version})
     return {"message": "Funding instructions updated", "version": version}
 
+# ==================== CRYPTO WALLET ENDPOINTS ====================
+
+@api_router.get("/crypto/wallets")
+async def get_crypto_wallets(user: dict = Depends(get_current_user)):
+    """Get crypto wallet addresses for deposit"""
+    wallets = await db.settings.find_one({"type": "crypto_wallets"}, {"_id": 0})
+    if not wallets:
+        return {"wallets": [], "message": "Crypto wallets not configured"}
+    
+    # Return wallet addresses with network info
+    wallet_list = []
+    wallet_configs = [
+        {"asset": "BTC", "network": "Bitcoin", "key": "btc_address", "icon": "bitcoin"},
+        {"asset": "ETH", "network": "Ethereum", "key": "eth_address", "icon": "ethereum", "note": "ERC20 compatible"},
+        {"asset": "XLM", "network": "Stellar", "key": "xlm_address", "icon": "stellar"},
+        {"asset": "BCH", "network": "Bitcoin Cash", "key": "bch_address", "icon": "bitcoin-cash"},
+        {"asset": "USDT", "network": wallets.get("usdt_network", "ERC20"), "key": "usdt_address", "icon": "tether", "note": wallets.get("usdt_network", "ERC20")},
+    ]
+    
+    for config in wallet_configs:
+        address = wallets.get(config["key"])
+        if address:
+            wallet_list.append({
+                "asset": config["asset"],
+                "network": config["network"],
+                "address": address,
+                "icon": config["icon"],
+                "network_note": config.get("note"),
+                "min_confirmations": 3 if config["asset"] == "BTC" else 12 if config["asset"] == "ETH" else 1
+            })
+    
+    return {
+        "wallets": wallet_list,
+        "crypto_transfer_fee": wallets.get("crypto_transfer_fee", 0.001),
+        "last_updated": wallets.get("updated_at")
+    }
+
+@api_router.get("/admin/crypto/wallets")
+async def admin_get_crypto_wallets(admin: dict = Depends(get_admin_user)):
+    """Get crypto wallet settings for admin"""
+    wallets = await db.settings.find_one({"type": "crypto_wallets"}, {"_id": 0})
+    if not wallets:
+        return {
+            "btc_address": "",
+            "eth_address": "",
+            "xlm_address": "",
+            "bch_address": "",
+            "usdt_address": "",
+            "usdt_network": "ERC20",
+            "crypto_transfer_fee": 0.001
+        }
+    return wallets
+
+@api_router.put("/admin/crypto/wallets")
+async def admin_update_crypto_wallets(
+    settings: CryptoWalletSettings,
+    admin: dict = Depends(get_admin_user)
+):
+    """Update crypto wallet addresses"""
+    before = await db.settings.find_one({"type": "crypto_wallets"}, {"_id": 0})
+    
+    settings_dict = settings.model_dump()
+    settings_dict["type"] = "crypto_wallets"
+    settings_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+    settings_dict["updated_by"] = admin["id"]
+    
+    await db.settings.update_one(
+        {"type": "crypto_wallets"},
+        {"$set": settings_dict},
+        upsert=True
+    )
+    
+    after = await db.settings.find_one({"type": "crypto_wallets"}, {"_id": 0})
+    await log_audit(admin["id"], "crypto_wallets_updated", {"changes": "wallet addresses updated"}, before, after)
+    
+    return {"message": "Crypto wallet settings updated"}
+
 @api_router.get("/admin/audit-logs")
 async def admin_get_audit_logs(
     skip: int = 0,
