@@ -71,6 +71,18 @@ export default function AdminSettings() {
     }
   };
 
+  const fetchCryptoSettings = async () => {
+    try {
+      const response = await api.get('/admin/crypto/wallets');
+      setCryptoSettings(prev => ({
+        ...prev,
+        ...response.data
+      }));
+    } catch (error) {
+      console.error('Failed to load crypto settings');
+    }
+  };
+
   const handleSaveSmtp = async () => {
     setSaving(true);
     try {
