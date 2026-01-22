@@ -1420,6 +1420,21 @@ For assistance, contact: support@prominencebank.com
     }
     await db.content.insert_one(funding_content)
     
+    # Create demo crypto wallet addresses
+    crypto_wallets = {
+        "type": "crypto_wallets",
+        "btc_address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "eth_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+        "xlm_address": "GBZXN7PIRZGNMHGA7MUUUF4GWPY5AYPV6LY4UV2GL6VJGIQRXFDNMADI",
+        "bch_address": "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a",
+        "usdt_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+        "usdt_network": "ERC20",
+        "crypto_transfer_fee": 0.001,
+        "updated_by": admin["id"],
+        "updated_at": now
+    }
+    await db.settings.insert_one(crypto_wallets)
+    
     return {
         "message": "Demo data seeded successfully",
         "admin_email": "admin@prominencebank.com",
