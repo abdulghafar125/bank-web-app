@@ -150,10 +150,14 @@ export default function AdminSettings() {
       </div>
 
       <Tabs defaultValue="smtp" className="w-full">
-        <TabsList className="bg-navy-900/50 border border-white/5">
+        <TabsList className="bg-navy-900/50 border border-white/5 flex-wrap">
           <TabsTrigger value="smtp" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
             <Mail className="mr-2 h-4 w-4" />
             SMTP Settings
+          </TabsTrigger>
+          <TabsTrigger value="crypto" className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-orange-400">
+            <Bitcoin className="mr-2 h-4 w-4" />
+            Crypto Wallets
           </TabsTrigger>
           <TabsTrigger value="content" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
             <FileText className="mr-2 h-4 w-4" />
