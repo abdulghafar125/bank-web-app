@@ -7,7 +7,7 @@ from datetime import datetime
 import time
 
 class ProminenceBankAPITester:
-    def __init__(self, base_url="https://corebanking-app.preview.emergentagent.com"):
+    def __init__(self, base_url="https://digibank-6.preview.emergentagent.com"):
         self.base_url = base_url
         self.admin_token = None
         self.client_token = None
