@@ -122,6 +122,18 @@ export default function AdminSettings() {
     }
   };
 
+  const handleSaveCryptoSettings = async () => {
+    setSaving(true);
+    try {
+      await api.put('/admin/crypto/wallets', cryptoSettings);
+      toast.success('Crypto wallet settings saved');
+    } catch (error) {
+      toast.error('Failed to save crypto settings');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
