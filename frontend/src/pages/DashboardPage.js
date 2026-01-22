@@ -111,6 +111,28 @@ export default function DashboardPage() {
     return `inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.pending}`;
   };
 
+  const copyToClipboard = async (address, asset) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopiedAddress(asset);
+      toast.success(`${asset} address copied!`);
+      setTimeout(() => setCopiedAddress(null), 2000);
+    } catch (err) {
+      toast.error('Failed to copy address');
+    }
+  };
+
+  const getCryptoIcon = (asset) => {
+    const colors = {
+      BTC: 'text-orange-400 bg-orange-500/20',
+      ETH: 'text-blue-400 bg-blue-500/20',
+      XLM: 'text-cyan-400 bg-cyan-500/20',
+      BCH: 'text-green-400 bg-green-500/20',
+      USDT: 'text-emerald-400 bg-emerald-500/20'
+    };
+    return colors[asset] || 'text-slate-400 bg-slate-500/20';
+  };
+
   const selectedAccount = accounts[selectedAccountIndex];
 
   if (loading) {
