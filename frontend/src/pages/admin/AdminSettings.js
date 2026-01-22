@@ -29,9 +29,20 @@ export default function AdminSettings() {
   const [fundingContent, setFundingContent] = useState('');
   const [contentVersion, setContentVersion] = useState(1);
 
+  const [cryptoSettings, setCryptoSettings] = useState({
+    btc_address: '',
+    eth_address: '',
+    xlm_address: '',
+    bch_address: '',
+    usdt_address: '',
+    usdt_network: 'ERC20',
+    crypto_transfer_fee: 0.001
+  });
+
   useEffect(() => {
     fetchSettings();
     fetchFundingContent();
+    fetchCryptoSettings();
   }, []);
 
   const fetchSettings = async () => {
