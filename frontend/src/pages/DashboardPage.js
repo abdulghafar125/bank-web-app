@@ -329,6 +329,86 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Crypto Wallets Section */}
+      {cryptoWallets.length > 0 && (
+        <div data-testid="crypto-wallets-section">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Bitcoin className="h-5 w-5 text-orange-400" />
+              <h2 className="text-base font-heading font-semibold text-white">Crypto Wallets</h2>
+            </div>
+          </div>
+          
+          {/* Horizontal Scrollable Wallet Cards */}
+          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide">
+            {cryptoWallets.map((wallet) => (
+              <div
+                key={wallet.asset}
+                className="flex-shrink-0 w-[280px] sm:w-[320px] p-4 rounded-2xl border border-white/5 bg-navy-900/50 snap-start"
+                data-testid={`crypto-wallet-${wallet.asset}`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${getCryptoIcon(wallet.asset)}`}>
+                      <span className="text-sm font-bold">{wallet.asset}</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">{wallet.asset}</p>
+                      <p className="text-slate-500 text-xs">{wallet.network}</p>
+                    </div>
+                  </div>
+                  {wallet.network_note && (
+                    <span className="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-400">
+                      {wallet.network_note}
+                    </span>
+                  )}
+                </div>
+                
+                {/* QR Code */}
+                <div 
+                  className="bg-white p-3 rounded-xl mb-3 cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => setSelectedWallet(selectedWallet === wallet.asset ? null : wallet.asset)}
+                >
+                  <QRCodeSVG 
+                    value={wallet.address} 
+                    size={selectedWallet === wallet.asset ? 180 : 100}
+                    className="mx-auto transition-all duration-300"
+                  />
+                </div>
+                
+                {/* Address with Copy Button */}
+                <div className="flex items-center gap-2 p-2 bg-navy-950/50 rounded-lg">
+                  <p className="text-slate-300 text-xs font-mono flex-1 truncate">
+                    {wallet.address}
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 p-0 hover:bg-white/10"
+                    onClick={() => copyToClipboard(wallet.address, wallet.asset)}
+                    data-testid={`copy-${wallet.asset}-btn`}
+                  >
+                    {copiedAddress === wallet.asset ? (
+                      <Check className="h-4 w-4 text-emerald-400" />
+                    ) : (
+                      <Copy className="h-4 w-4 text-slate-400" />
+                    )}
+                  </Button>
+                </div>
+                
+                {/* Warning */}
+                <div className="mt-3 flex items-start gap-2 text-xs text-yellow-400/80">
+                  <AlertTriangle className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" />
+                  <span>
+                    Only send {wallet.asset} to this address. Min {wallet.min_confirmations} confirmations required.
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Recent Transactions - Mobile Style */}
       <div data-testid="recent-transactions">
         <div className="flex items-center justify-between mb-3">
