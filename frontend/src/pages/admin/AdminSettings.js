@@ -169,7 +169,7 @@ export default function AdminSettings() {
           <Card className="glass-card">
             <CardHeader>
               <CardTitle className="text-white">Email (SMTP) Configuration</CardTitle>
-              <p className="text-slate-400 text-sm">Configure the bank's email server for OTP delivery</p>
+              <p className="text-slate-400 text-sm">Configure the bank&apos;s email server for OTP delivery</p>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -413,7 +413,7 @@ export default function AdminSettings() {
                 <span className="text-sm font-normal text-slate-400">Version {contentVersion}</span>
               </CardTitle>
               <p className="text-slate-400 text-sm">
-                Edit the "How to Fund Your Account" page content. Changes are instant for all clients.
+                Edit the &quot;How to Fund Your Account&quot; page content. Changes are instant for all clients.
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
