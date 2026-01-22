@@ -20,10 +20,15 @@ import {
   Shield,
   Eye,
   EyeOff,
-  Plus
+  Plus,
+  Copy,
+  Check,
+  AlertTriangle,
+  Bitcoin
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function DashboardPage() {
   const { api, user } = useAuth();
