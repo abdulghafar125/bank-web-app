@@ -233,6 +233,25 @@ class FundingInstructions(BaseModel):
     content: str
     version: Optional[int] = None
 
+# Crypto Wallet Models
+class CryptoWallet(BaseModel):
+    asset: str  # BTC, ETH, XLM, BCH, USDT
+    network: str  # Bitcoin, Ethereum, Stellar, etc.
+    address: str
+    label: Optional[str] = None
+    network_note: Optional[str] = None  # e.g., "ERC20", "TRC20"
+    min_confirmations: int = 3
+    is_active: bool = True
+
+class CryptoWalletSettings(BaseModel):
+    btc_address: Optional[str] = None
+    eth_address: Optional[str] = None
+    xlm_address: Optional[str] = None
+    bch_address: Optional[str] = None
+    usdt_address: Optional[str] = None
+    usdt_network: Optional[str] = "ERC20"  # ERC20 or TRC20
+    crypto_transfer_fee: Optional[float] = 0.001
+
 # ==================== HELPER FUNCTIONS ====================
 
 def generate_account_number():
