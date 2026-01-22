@@ -9,10 +9,11 @@ Build a Core Banking / Digital Banking Platform for Prominence Bank with:
 - OTP mandatory for: Login, adding beneficiary, external transfers
 - Bank instruments (KTT) management
 - Full audit logging with RBAC
+- Crypto Wallet support with QR codes for deposits
 
 ## User Personas
-1. **Bank Clients**: High-net-worth individuals and businesses using the platform for account management, transfers, and viewing bank instruments
-2. **Bank Administrators**: Staff managing customers, processing transfers, creating instruments, configuring settings
+1. **Bank Clients**: High-net-worth individuals and businesses using the platform for account management, transfers, viewing bank instruments, and crypto deposits
+2. **Bank Administrators**: Staff managing customers, processing transfers, creating instruments, configuring settings including crypto wallets
 3. **Super Admin**: Full system access including transaction redaction and audit log access
 
 ## Core Requirements (Static)
@@ -26,8 +27,30 @@ Build a Core Banking / Digital Banking Platform for Prominence Bank with:
 - Audit logging for all actions
 - Transaction redaction (super admin)
 - Configurable SMTP for OTP delivery
+- Crypto wallet addresses for deposits (BTC, ETH, XLM, BCH, USDT)
 
 ## What's Been Implemented
+### Date: 2026-01-22 (Crypto Wallets Feature)
+
+**Crypto Wallets Feature**
+- ✅ Backend API endpoints for crypto wallet settings
+  - GET /api/crypto/wallets - Get wallet addresses for client deposits
+  - GET /api/admin/crypto/wallets - Admin view of wallet settings
+  - PUT /api/admin/crypto/wallets - Admin update wallet addresses
+- ✅ Client Dashboard Crypto Wallets section showing:
+  - Wallet addresses for BTC, ETH, XLM, BCH, USDT
+  - QR codes for each wallet address (expandable on click)
+  - Copy-to-clipboard functionality with visual feedback
+  - Network badges (ERC20 compatible, TRC20, etc.)
+  - Warning messages about confirmations required
+  - Horizontally scrollable cards for mobile
+- ✅ Admin Settings Crypto Wallets tab with:
+  - Configuration fields for all supported cryptocurrencies
+  - USDT network selector (ERC20/TRC20/BEP20)
+  - Crypto transfer fee percentage setting
+  - Audit logging for all wallet address changes
+- ✅ Demo wallet addresses seeded for testing
+
 ### Date: 2026-01-20 (Initial MVP + Modernization)
 
 **Backend (FastAPI + MongoDB)**
@@ -61,6 +84,7 @@ Build a Core Banking / Digital Banking Platform for Prominence Bank with:
   - In Transit/On Hold indicators
   - SEND/PAY/REQUEST quick actions (mobile banking style)
   - Horizontal scrollable account cards
+  - Crypto Wallets section with QR codes
   - Recent transactions with status
   - Quick links grid
 - ✅ Accounts page with multi-currency display
@@ -73,26 +97,19 @@ Build a Core Banking / Digital Banking Platform for Prominence Bank with:
 - ✅ Support Tickets
 - ✅ Profile & Security settings
 - ✅ Funding Instructions page
-- ✅ Admin Dashboard with:
-  - Role badge (super admin)
-  - Colored stat cards
-  - Pending transfers section
-  - Quick actions grid
-  - Recent audit log activity
-  - Switch to client view option
+- ✅ Admin Dashboard
 - ✅ Admin Customer Management
 - ✅ Admin Account Management
 - ✅ Admin Transfer Management
 - ✅ Admin Instrument Creation
-- ✅ Admin Settings (SMTP, OTP config)
+- ✅ Admin Settings (SMTP, Crypto Wallets, Funding Instructions)
 - ✅ Admin Audit Logs
 
 **Branding**
 - ✅ Prominence Bank logo integrated
 - ✅ Navy blue (#0a1628) + Cyan (#00a8e8) theme
 - ✅ Professional banking UI/UX
-- ✅ "Smart Banking Made Simple" tagline
-- ✅ Stats display (20+ Currencies, 24/7 Support, 100% Secure)
+- ✅ Mobile responsive design
 
 ## Demo Credentials
 - **Admin**: admin@prominencebank.com / admin123 / OTP: 123456
@@ -106,28 +123,30 @@ Build a Core Banking / Digital Banking Platform for Prominence Bank with:
 - [x] Transfers (internal/external)
 - [x] Admin portal
 - [x] Modern UI/UX
+- [x] Crypto Wallets with QR codes
 
-### P1 (High Priority - Phase 2)
+### P1 (High Priority - Next)
+- [ ] Complete mobile responsiveness for all pages
 - [ ] PDF statement generation
-- [ ] Email notifications for transfer status changes
+- [ ] Banking Products full CRUD (CD, SBLC, BG, SKR, BCC, POF, BF, KTT, SWIFT)
 - [ ] Password reset flow
-- [ ] Mobile-responsive fine-tuning
+- [ ] Email notifications for transfer status changes
 
 ### P2 (Medium Priority)
-- [ ] Multi-language support
-- [ ] Dark/Light theme toggle
+- [ ] Deposit Management with Hold/Release
+- [ ] Fee Table configuration
+- [ ] Wire Transfer minimum balance settings
+- [ ] Admin OTP generation for customers
 - [ ] Advanced reporting dashboard
-- [ ] Fee configuration system
-- [ ] Interest calculation
 
 ### P3 (Future)
-- [ ] Mobile apps (React Native)
-- [ ] Crypto wallet API integration
+- [ ] Native mobile apps (React Native)
 - [ ] SWIFT/SEPA integration
 - [ ] Data migration tools
+- [ ] Real-time WebSocket updates
 
 ## Next Action Items
-1. Configure real SMTP settings for production OTP delivery
-2. Add PDF statement generation
-3. Implement email notifications for transfer status changes
+1. Complete mobile responsiveness for remaining pages
+2. Implement PDF statement generation
+3. Add full Banking Products CRUD
 4. Add password reset flow
